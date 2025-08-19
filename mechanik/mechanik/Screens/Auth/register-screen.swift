@@ -40,11 +40,11 @@ struct RegisterScreen: View {
                 )
                 .autocapitalization(.none)
             
-            Button(action: {
+            Button(action: {
                 viewModel.registerUser()
             }) {
                 Text("Kayıt Ol")
-                    .frame(maxWidth: .infinity) // Genişliği Button’a taşı
+                    .frame(maxWidth: .infinity)
                     .padding()
                     .background(Color.customGreen)
                     .foregroundColor(.white)
