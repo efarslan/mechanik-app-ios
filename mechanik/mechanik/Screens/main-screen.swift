@@ -6,9 +6,16 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
 
 struct MainScreen: View {
     var body: some View {
         Text("Hello, World!")
+            .foregroundColor(Color.customGreen)
     }
+}
+
+
+#Preview {
+    MainScreen()
 }

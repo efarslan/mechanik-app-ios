@@ -22,7 +22,7 @@ struct mechanikApp: App {
 
     var body: some Scene {
         WindowGroup {
-            main_tab_view()
+            RootView()
         }
     }
 }

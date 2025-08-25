@@ -13,13 +13,13 @@ struct main_tab_view: View {
             MainScreen()
                 .tabItem {
                     Image(systemName: "house")
-                    Text("Ana Sayfa")
+                    Text("Home")
                 }
             
             CarsScreen()
                 .tabItem {
                     Image(systemName: "car")
-                    Text("Araçlar")
+                    Text("Cars")
                 }
             
             EmptyView()
@@ -28,6 +28,7 @@ struct main_tab_view: View {
                     Text("...")
                 }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
