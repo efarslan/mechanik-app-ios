@@ -9,15 +9,23 @@ import SwiftUI
 
 struct CarsScreen: View {
     @State private var searchText: String = ""
+    
+    @StateObject private var viewModel = FetchCarsViewModel()
     var body: some View {
         
         NavigationStack {
             ZStack {
-                ScrollView{
+                VStack {
                     VStack {
                         SearchBar(text: $searchText)
                             .padding()
                         
+                    }
+                    ScrollView{
+                        LazyVStack(spacing: 30) {
+                            ForEach(viewModel.cars) {car in
+                                VehicleCard(brand: car.brand, model: car.model, plateNumber: car.license, engineSize: car.engineSize, fuelType: car.fuelType)}
+                        }
                     }
                 }
                 
@@ -37,6 +45,9 @@ struct CarsScreen: View {
                     }
                 }
             }
+        }
+        .onAppear {
+            viewModel.fetchCars()
         }
     }
 }

@@ -139,6 +139,7 @@ struct AracEklemeScreen: View {
 
                     
                     // İçten Yanmalı Motor ise
+                    //TODO: Şanzıman türü eklenecek (otomatik-manuel)
                     
                     if fuelType == "Petrol" || fuelType == "Diesel" || fuelType == "Hybrid" {
                         TextField("Engine Size (cc)", text: $engineSize)

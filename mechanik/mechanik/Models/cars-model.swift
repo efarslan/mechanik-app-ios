@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 struct Car: Identifiable, Codable {
-    var id: String = UUID().uuidString
+    @DocumentID var id: String?
     var license: String
     var brand: String
     var model: String
