@@ -54,4 +54,5 @@ struct CarsScreen: View {
 
 #Preview {
     CarsScreen()
+        .environment(\.locale, .init(identifier: "tr")) // Türkçe
 }
