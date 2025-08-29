@@ -51,6 +51,7 @@ struct addNewJob: View {
             .background(Color(.systemBackground))
             .navigationTitle("Add New Job")
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)
         }
 
         HStack {
@@ -190,6 +191,7 @@ struct addNewJob: View {
             license: "34ABC123",
             brand: "Toyota",
             model: "Corolla",
+            year: 2025,
             fuelType: "Gasoline",
             engineSize: "1.6",
             chasisNo: "ABC123456789",
@@ -207,6 +209,7 @@ struct addNewJob: View {
         license: "34ABC123",
         brand: "Toyota",
         model: "Corolla",
+        year: 2025,
         fuelType: "Gasoline",
         engineSize: "1.6",
         chasisNo: "ABC123456789",

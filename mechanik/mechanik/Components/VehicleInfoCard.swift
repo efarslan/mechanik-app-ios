@@ -73,5 +73,5 @@ struct VehicleCard: View {
 }
 
 #Preview {
-    CarsScreen()
+    CarsScreen(isTabBarHidden: .constant(false))
 }

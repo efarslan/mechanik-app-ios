@@ -13,6 +13,7 @@ class AddCarViewModel: ObservableObject {
     @Published var license = ""
     @Published var brand = ""
     @Published var model = ""
+    @Published var year: Int? = nil
     @Published var fuelType = ""
     @Published var engineSize = ""
     @Published var chasisNo = ""
@@ -81,6 +82,7 @@ class AddCarViewModel: ObservableObject {
             "license": license,
             "brand": brand,
             "model": model,
+            "year": year ?? Calendar.current.component(.year, from: Date()),
             "fuelType": fuelType,
             "engineSize": engineSize,
             "chasisNo": chasisNo,

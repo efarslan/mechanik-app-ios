@@ -48,7 +48,8 @@ class AddJobViewModel: ObservableObject {
                     brandText: brandText,
                     quantityText: quantityText,
                     unitPriceText: unitPriceText,
-                    photos: photoURLs
+                    photos: photoURLs,
+                    createdAt: Date() // ✅ Bu satırı ekleyin
                 )
                 
                 let jobId = generateJobId()

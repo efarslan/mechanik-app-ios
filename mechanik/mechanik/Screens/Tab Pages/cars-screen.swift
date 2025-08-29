@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct CarsScreen: View {
+    @Binding var isTabBarHidden: Bool
     @State private var searchText: String = ""
-    
     @StateObject private var viewModel = FetchCarsViewModel()
+    
     var body: some View {
         
         NavigationStack {
@@ -24,7 +25,10 @@ struct CarsScreen: View {
                     ScrollView{
                         LazyVStack(spacing: 30) {
                             ForEach(viewModel.cars) {car in
-                                NavigationLink(destination: CarDetails(car: car)) {
+                                NavigationLink(destination: CarDetails(car: car)
+                                    .onAppear {isTabBarHidden = true}
+                                    .onDisappear {isTabBarHidden = false}
+                                ) {
                                     VehicleCard(brand: car.brand, model: car.model, plateNumber: car.license, engineSize: car.engineSize, fuelType: car.fuelType)
                                 }
                             }
@@ -36,7 +40,10 @@ struct CarsScreen: View {
                     Spacer()
                     HStack {
                         Spacer()
-                        NavigationLink(destination: AracEklemeScreen()) {
+                        NavigationLink(destination: AracEklemeScreen()
+                            .onAppear { isTabBarHidden = true }
+                            .onDisappear { isTabBarHidden = false }
+                        ) {
                             Image(systemName: "plus")
                                 .foregroundColor(.white)
                                 .font(.system(size: 24, weight: .bold))
@@ -56,6 +63,6 @@ struct CarsScreen: View {
 }
 
 #Preview {
-    CarsScreen()
+    CarsScreen(isTabBarHidden: .constant(false))
         .environment(\.locale, .init(identifier: "tr")) // Türkçe
 }

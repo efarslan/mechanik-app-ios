@@ -10,7 +10,7 @@ import SwiftUI
 struct detailBox: View {
     let brand: String
     let model: String
-    var year: String
+    var year: Int
     var engine: String
     var fuel: String
     var chasis: String
@@ -24,7 +24,7 @@ struct detailBox: View {
                     VStack(alignment: .leading, spacing: 12) {
                         InfoRow(title: "Brand", value: brand)
                         InfoRow(title: "Model", value: model)
-                        InfoRow(title: "Year", value: year)
+                        InfoRow(title: "Year", value: String(year))
                         InfoRow(title: "Engine", value: "\(engine) \(fuel)")
                         InfoRow(title: "Chasis Number", value: chasis)
                     }
@@ -41,7 +41,7 @@ struct detailBox: View {
 }
 
 struct InfoRow: View {
-    let title: String
+    let title: LocalizedStringKey
     var value: String
     
     var body: some View {
@@ -58,13 +58,14 @@ struct InfoRow: View {
 
 struct smallDetailBox: View {
     let icon: String
-    let title: String
+    let title: LocalizedStringKey
     var value: String
     
     var body: some View {
             RoundedRectangle(cornerRadius: 15)
             .fill(.ultraThinMaterial)
-            .frame(maxWidth: 165, minHeight: 150)
+//            .frame(maxWidth: 165, minHeight: 150)
+            .frame(maxWidth: .infinity, minHeight: 150)
             .overlay(
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
@@ -93,14 +94,15 @@ struct historyCard: View {
     
     var body: some View {
         RoundedRectangle(cornerRadius: 15)
-            .fill(Color.white)
-            .frame(maxWidth: .infinity, maxHeight: 70)
+            .fill(Color(.systemBackground))
+            .frame(maxWidth: .infinity, minHeight: 70)
             .overlay(
                 HStack {
-                    VStack (alignment: .leading) {
+                    VStack (alignment: .leading, spacing: 4) {
                         Text(jobName)
                             .font(.headline)
-                            .foregroundColor(.black)
+//                            .foregroundColor(.black)
+                            .multilineTextAlignment(.leading)
                         
                         Text(DateFormatter.carDate.string(from: date))
                             .font(.subheadline)
@@ -109,13 +111,15 @@ struct historyCard: View {
                     Spacer()
                     
                     Button(action: {
-
+                        // TODO: Job detayına git
                     }) {
                         Image(systemName: "arrow.up.right")
                             
                     }
                 }
                     .padding(.horizontal)
+                    .padding(.vertical, 8)
+
             )
             .padding(.horizontal)
 
@@ -130,9 +134,11 @@ struct historyCard: View {
     NavigationStack {
         CarDetails(
             car: Car(
+                id: "34TST34",
                 license: "34TST34",
                 brand: "Volkswagen",
                 model: "Golf",
+                year: 2025,
                 fuelType: "Petrol",
                 engineSize: "1.2",
                 chasisNo: "XYZ123456789",

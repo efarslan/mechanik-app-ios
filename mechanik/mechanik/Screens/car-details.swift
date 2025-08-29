@@ -6,24 +6,70 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct CarDetails: View {
     let car: Car
     @State private var showAddJob = false
+    @StateObject private var jobsViewModel = JobsViewModel()
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 12) {
                 header
                 history
                 newJob
             }
             .padding()
         }
+//        .refreshable {
+//            guard let carId = car.id else { return }
+//            jobsViewModel.fetchJobs(for: carId)
+//        }
         .scrollIndicators(.hidden)
         .background(Color(.systemBackground))
         .navigationTitle(car.license)
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .edgesIgnoringSafeArea(.bottom)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    Image(systemName: "arrow.left")
+                        .foregroundColor(.primary)
+                        .padding(10)
+                        .background(
+                            Circle()
+                                .fill(.ultraThinMaterial)
+                        )
+                }
+            }
+            
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {
+                    //TODO: Düzenleme vb.
+                }) {
+                    Image(systemName: "square.and.pencil")
+                        .foregroundColor(.primary)
+                        .padding(10)
+                        .background(
+                            Circle()
+                                .fill(.ultraThinMaterial)
+                        )
+                }
+            }
+        }
+        .onAppear {
+            guard let carId = car.id else {
+                print("❌ Car ID is NIL!")
+                return
+            }
+            
+            jobsViewModel.fetchJobs(for: carId)
+        }
         // Hidden NavigationLink for navigation to addNewJob
         NavigationLink(
             destination: addNewJob(car: car),
@@ -32,15 +78,15 @@ struct CarDetails: View {
         )
         .hidden()
     }
-    
+
     // MARK: - Header
     private var header: some View {
-        VStack (alignment: .leading) {
-            detailBox(brand: car.brand, model: car.model, year: "2025", engine: car.engineSize, fuel: car.fuelType, chasis: car.chasisNo)
+        VStack (alignment: .center) {
+            detailBox(brand: car.brand, model: car.model, year: car.year, engine: car.engineSize, fuel: car.fuelType, chasis: car.chasisNo)
             
             HStack {
                 smallDetailBox(icon: "newspaper", title: "Notes", value: car.notes.isEmpty ? "-" : car.notes)
-                
+                                
                 smallDetailBox(icon: "person", title: "Owner", value: "\(car.carOwner) \n \(car.ownerPhoneNumber)")
             }
         }
@@ -55,38 +101,49 @@ struct CarDetails: View {
     
     // MARK: - History
     private var history: some View {
-        RoundedRectangle(cornerRadius: 15)
-            .fill(.ultraThinMaterial)
-            .frame(maxWidth: .infinity, minHeight: 300)
-            .overlay(
-                VStack(alignment: .leading, spacing: 10) {
-                    HStack {
-                        Text("Service History")
-                            .font(.headline)
-                        
-                        Spacer()
-                        
-                        Button("See All") {
-                            //TODO: Tüm işlemleri gösterme işlevi eklenecek.
-                        }
-                    }
-                    .padding(.horizontal)
-                    .padding(.vertical)
-                    //TODO: not-found görseli eklenecek. / En güncel kayıt en üstte yer alacak.
-                    
-                    historyCard(jobName: "Oil Change", date: Date())
-//                    historyCard(jobName: "Oil Change", date: Date())
-//                    historyCard(jobName: "Oil Change", date: Date())
-
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text("Service History")
+                    .font(.headline)
+                
+                Spacer()
+                
+                Button("See All") {
+                    //TODO: Tüm işlemleri gösterme işlevi eklenecek.
                 }
-            )
+            }
+            .padding(.horizontal)
+            .padding(.top)
+            
+            if jobsViewModel.jobs.isEmpty {
+                VStack {
+                    Text("No Jobs Found.")
+                        .foregroundColor(.secondary)
+                    Spacer(minLength: 50)
+                }
+                .frame(minHeight: 100)
+                .padding()
+            } else {
+                LazyVStack(spacing: 8) {
+                    ForEach(jobsViewModel.jobs) { job in
+                        historyCard(jobName: job.jobType, date: job.createdAt)
+                    }
+                }
+                .padding(.bottom)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 15)
+                .fill(.ultraThinMaterial)
+        )
     }
-    
     //MARK: - New Job
     private var newJob: some View {
         CustomButton(buttonText: "Add New Job", buttonTextColor: Color.color2, buttonImage: "plus", buttonColor: Color.color1) {
             showAddJob = true
         }
+        
     }
 
     // MARK: - Helpers
@@ -113,18 +170,48 @@ extension DateFormatter {
     NavigationStack {
         CarDetails(
             car: Car(
+                id: "34TST34",
                 license: "34TST34",
                 brand: "Volkswagen",
                 model: "Golf",
+                year: 2025,
                 fuelType: "Petrol",
                 engineSize: "1.2",
                 chasisNo: "XYZ123456789",
                 carOwner: "Tester",
-                ownerPhoneNumber: "5551234567",
-                notes: "Regular maintenance done. Tire rotation due in 5,000 km. Regular maintenance done. Tire rotation due in 5,000 km. Regular maintenance done. Tire rotation due in 5,000 km.",
+                ownerPhoneNumber: "5551",
+                notes: "Regular maintenance done.",
                 createdAt: Date()
             )
         )
         .padding()
     }
+    .environment(\.locale, .init(identifier: "tr"))
+}
+
+#Preview {
+    NavigationStack {
+        CarDetails(
+            car: Car(
+                id: "34TS34",
+                license: "34TST34",
+                brand: "Volkswagen",
+                model: "Golf",
+                year: 2025,
+                fuelType: "Petrol",
+                engineSize: "1.2",
+                chasisNo: "XYZ123456789",
+                carOwner: "Tester",
+                ownerPhoneNumber: "5551",
+                notes: "Regular maintenance done.",
+                createdAt: Date()
+            )
+        )
+        .padding()
+    }
+    .environment(\.locale, .init(identifier: "eng"))
+}
+
+#Preview {
+    CarsScreen(isTabBarHidden: .constant(false))
 }

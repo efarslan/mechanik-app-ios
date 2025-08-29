@@ -9,6 +9,7 @@ import SwiftUI
 import FirebaseFirestore
 
 struct MainScreen: View {
+    @Binding var isTabBarHidden: Bool
     var body: some View {
         Text("Hello, World!")
             .foregroundColor(Color.customGreen)
@@ -17,5 +18,5 @@ struct MainScreen: View {
 
 
 #Preview {
-    MainScreen()
+    MainScreen(isTabBarHidden: .constant(false))
 }

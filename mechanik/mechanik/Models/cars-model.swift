@@ -13,6 +13,7 @@ struct Car: Identifiable, Codable {
     var license: String
     var brand: String
     var model: String
+    var year: Int
     var fuelType: String
     var engineSize: String
     var chasisNo: String

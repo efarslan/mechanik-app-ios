@@ -272,6 +272,17 @@
         }
       }
     },
+    "Chasis Number" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şasi No"
+          }
+        }
+      }
+    },
     "Chasis Number (Optional)" : {
       "localizations" : {
         "tr" : {
@@ -386,6 +397,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elektrik Sistemi"
+          }
+        }
+      }
+    },
+    "Engine" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Motor"
           }
         }
       }
@@ -652,6 +674,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Diğer"
+          }
+        }
+      }
+    },
+    "Owner" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Araç Sahibi"
           }
         }
       }
@@ -1009,6 +1042,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Devridaim Pompası"
+          }
+        }
+      }
+    },
+    "Year" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yıl"
           }
         }
       }

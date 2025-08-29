@@ -20,10 +20,12 @@ struct AracEklemeScreen: View {
     // Aşama 2
     @State private var brand = ""
     @State private var model = ""
+    @State private var year = ""
     @State private var fuelType = ""
     @State private var engineSize = ""
     @State private var chasisNo = ""
     @State private var selectedModelKey = ""
+    @State private var showYearError: Bool? = nil
     
     // Aşama 3
     @State private var carOwner = ""
@@ -33,7 +35,7 @@ struct AracEklemeScreen: View {
 
     @StateObject var viewModel = AddCarViewModel()
     
-    let fuelsList = ["Electric", "Hybrid", "LPG", "Diesel", "Petrol"]
+    let fuelsList = ["Petrol", "Diesel", "LPG", "Hybrid", "Electric"]
 
     var body: some View {
         VStack(spacing: 20) {
@@ -61,6 +63,7 @@ struct AracEklemeScreen: View {
                 .scrollIndicators(.hidden)
                 .background(Color(.systemBackground))
                 .navigationBarTitleDisplayMode(.inline)
+                
             }
             
             HStack {
@@ -75,40 +78,59 @@ struct AracEklemeScreen: View {
                 }
                 
                 CustomButton(buttonText: currentState >= 3 ? "Save" : "Next", buttonTextColor: .color2, buttonImage: "chevron.right", buttonColor: .color1) {
-                    withAnimation(.easeInOut) {
-                        if currentState < 3 {
-                            if license.isEmpty || license.count < 7 {
-                                showLicenseError = true
-                                return
-                            } else {
-                                showLicenseError = false
-                            }
+                    if currentState == 1 {
+                        if license.isEmpty || license.count < 7 {
+                            showLicenseError = true
+                            return
+                        } else {
+                            showLicenseError = false
                             currentState += 1
-                        } else if currentState == 3 {
-                            if carOwner.isEmpty {
-                                showOwnerError = true
-                                return
+                        }
+                    }
+                    
+                    else if currentState == 2 {
+                        if year.isEmpty || Int(year) == nil || year.count != 4 {
+                            showYearError = true
+                            return
+                        } else {
+                            showYearError = false
+                            currentState += 1
+                        }
+                    }
+                    
+                    else if currentState == 3 {
+                        if carOwner.isEmpty {
+                            showOwnerError = true
+                            return
+                        } else {
+                            showOwnerError = false
+                        }
+                        withAnimation(.easeInOut) {
+                            viewModel.license = license
+                            viewModel.brand = brand
+                            viewModel.model = model
+                            if let yearInt = Int(year) {
+                                viewModel.year = yearInt
                             } else {
-                                showOwnerError = false
+                                viewModel.year = Calendar.current.component(.year, from: Date())
                             }
-                            withAnimation(.easeInOut) {
-                                viewModel.license = license
-                                viewModel.brand = brand
-                                viewModel.model = model
-                                viewModel.fuelType = fuelType
+                            viewModel.fuelType = fuelType
+
+                            if fuelType != "Electric" {
                                 viewModel.engineSize = engineSize
-                                viewModel.chasisNo = chasisNo
-                                viewModel.carOwner = carOwner
-                                viewModel.ownerPhoneNumber = ownerPhoneNumber
-                                viewModel.notes = notes
-                                
-                                viewModel.saveCar { success in
-                                    if success {
-                                        print("✅ Car saved successfully")
-                                        presentationMode.wrappedValue.dismiss()
-                                    } else {
-                                        print("❌ Failed to save car")
-                                    }
+                            } else { engineSize = "-" }
+
+                            viewModel.chasisNo = chasisNo
+                            viewModel.carOwner = carOwner
+                            viewModel.ownerPhoneNumber = ownerPhoneNumber
+                            viewModel.notes = notes
+
+                            viewModel.saveCar { success in
+                                if success {
+                                    print("✅ Car saved successfully")
+                                    presentationMode.wrappedValue.dismiss()
+                                } else {
+                                    print("❌ Failed to save car")
                                 }
                             }
                         }
@@ -123,6 +145,7 @@ struct AracEklemeScreen: View {
         .onAppear {
             viewModel.fetchBrands()
         }
+
     }
     //MARK: - License Plate Section
     private var licensePlateView: some View {
@@ -198,6 +221,8 @@ struct AracEklemeScreen: View {
                 viewModel.fetchModels(for: newBrand)
             }
             
+            customTextField(placeholder: "Year", text: $year, isRequired: true, showError: $showYearError)
+            
             
             //Fuel Picker
             CustomPicker(selectedItem: $fuelType, items: fuelsList, placeholder: String(localized: "Select Fuel Type"))
@@ -206,14 +231,16 @@ struct AracEklemeScreen: View {
             //TODO: Şanzıman türü eklenecek (otomatik-manuel)
             //TODO: Araç model yılı eklenecek.
             
-            if fuelType == "Petrol" || fuelType == "Diesel" || fuelType == "Hybrid" {
-                TextField("Engine Size (cc)", text: $engineSize)
-                    .padding()
-                    .cornerRadius(30)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 30)
-                            .stroke(Color.gray.opacity(0.4), lineWidth: 1)
-                    )                            .keyboardType(.numberPad)
+            if !fuelType.isEmpty && fuelType != "Electric" {
+                    TextField("Engine Size (cc)", text: $engineSize)
+                        .padding()
+                        .cornerRadius(30)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 30)
+                                .stroke(Color.gray.opacity(0.4), lineWidth: 1)
+                        )
+                        .keyboardType(.numberPad)
+                
             }
             customTextField(placeholder: "Chasis Number (Optional)", text: $chasisNo,showError: .constant(nil))
 

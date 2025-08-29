@@ -8,27 +8,29 @@
 import SwiftUI
 
 struct main_tab_view: View {
+    @State private var isTabBarHidden = false
     var body: some View {
-        TabView {
-            MainScreen()
-                .tabItem {
-                    Image(systemName: "house")
-                    Text("Home")
-                }
-            
-            CarsScreen()
-                .tabItem {
-                    Image(systemName: "car")
-                    Text("Cars")
-                }
-            
-            EmptyView()
-                .tabItem {
-                    Image(systemName: "ellipsis.circle.fill")
-                    Text("...")
-                }
+        NavigationStack {
+            TabView {
+                MainScreen(isTabBarHidden: $isTabBarHidden)
+                    .tabItem {
+                        Image(systemName: "house")
+                        Text("Home")
+                    }
+                
+                CarsScreen(isTabBarHidden: $isTabBarHidden)
+                    .tabItem {
+                        Image(systemName: "car")
+                        Text("Cars")
+                    }
+                
+                EmptyView()
+                    .tabItem {
+                        Image(systemName: "ellipsis.circle.fill")
+                        Text("...")
+                    }
+            }
         }
-        .navigationBarBackButtonHidden(true)
     }
 }
 
