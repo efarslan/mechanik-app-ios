@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CarDetails: View {
     let car: Car
+    @State private var showAddJob = false
     
     var body: some View {
         ScrollView {
@@ -23,6 +24,13 @@ struct CarDetails: View {
         .background(Color(.systemBackground))
         .navigationTitle(car.license)
         .navigationBarTitleDisplayMode(.inline)
+        // Hidden NavigationLink for navigation to addNewJob
+        NavigationLink(
+            destination: addNewJob(car: car),
+            isActive: $showAddJob,
+            label: { EmptyView() }
+        )
+        .hidden()
     }
     
     // MARK: - Header
@@ -77,7 +85,7 @@ struct CarDetails: View {
     //MARK: - New Job
     private var newJob: some View {
         CustomButton(buttonText: "Add New Job", buttonTextColor: Color.color2, buttonImage: "plus", buttonColor: Color.color1) {
-            //TODO: Buton islevi eklenecek.
+            showAddJob = true
         }
     }
 
@@ -113,7 +121,7 @@ extension DateFormatter {
                 chasisNo: "XYZ123456789",
                 carOwner: "Tester",
                 ownerPhoneNumber: "5551234567",
-                notes: "Regular maintenance done. Tire rotation due in 5,000 km.",
+                notes: "Regular maintenance done. Tire rotation due in 5,000 km. Regular maintenance done. Tire rotation due in 5,000 km. Regular maintenance done. Tire rotation due in 5,000 km.",
                 createdAt: Date()
             )
         )

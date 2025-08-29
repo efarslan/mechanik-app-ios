@@ -72,35 +72,34 @@ struct CustomBrandPicker: View {
     }
 }
 
-// MARK: Custom Universal Picker
-
+// MARK: - Custom Universal Picker
 struct CustomPicker: View {
     @Binding var selectedItem: String
-        let items: [String]
-        let placeholder: String
-        
-        init(
-            selectedItem: Binding<String>,
-            items: [String],
-            placeholder: String = "Select"
-        ) {
-            self._selectedItem = selectedItem
-            self.items = items
-            self.placeholder = placeholder
-        }
-        
+    let items: [String]
+    let placeholder: String
+    
+    init(
+        selectedItem: Binding<String>,
+        items: [String],
+        placeholder: String = "Select"
+    ) {
+        self._selectedItem = selectedItem
+        self.items = items
+        self.placeholder = placeholder
+    }
+    
     var body: some View {
         Menu {
             ForEach(items, id: \.self) { item in
                 Button(action: {
                     selectedItem = item
                 }) {
-                    Text(item)
+                    Text(LocalizedStringKey(item))
                 }
             }
         } label: {
             HStack {
-                Text(selectedItem.isEmpty ? placeholder : selectedItem)
+                Text(selectedItem.isEmpty ? LocalizedStringKey(placeholder) : LocalizedStringKey(selectedItem))
                     .foregroundColor(selectedItem.isEmpty ? .gray : .primary)
                 
                 Spacer()
@@ -118,5 +117,3 @@ struct CustomPicker: View {
         }
     }
 }
-
-

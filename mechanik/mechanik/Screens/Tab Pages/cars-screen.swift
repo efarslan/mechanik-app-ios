@@ -24,7 +24,10 @@ struct CarsScreen: View {
                     ScrollView{
                         LazyVStack(spacing: 30) {
                             ForEach(viewModel.cars) {car in
-                                VehicleCard(brand: car.brand, model: car.model, plateNumber: car.license, engineSize: car.engineSize, fuelType: car.fuelType)}
+                                NavigationLink(destination: CarDetails(car: car)) {
+                                    VehicleCard(brand: car.brand, model: car.model, plateNumber: car.license, engineSize: car.engineSize, fuelType: car.fuelType)
+                                }
+                            }
                         }
                     }
                 }

@@ -14,7 +14,7 @@ struct CustomButton: View {
         case trailing
     }
 
-    let buttonText: String
+    let buttonText: LocalizedStringKey
     let buttonTextColor: Color
     let buttonImage: String
     let buttonColor: Color
