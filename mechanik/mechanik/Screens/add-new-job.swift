@@ -33,7 +33,7 @@ struct addNewJob: View {
         "Cooling System": ["Radiator Replacement", "Thermostat Replacement", "Hose Replacement", "Coolant Replacement"],
         "Exhaust System": ["DPF Cleaning", "Catalytic Converter Cleaning", "Oxygen Sensor Replacement", "Manifold Gasket", "Mufflers"]
     ]
-    
+    //MARK: - Body
     var body: some View {
         ScrollView {
             VStack (alignment: .leading) {
@@ -77,20 +77,18 @@ struct addNewJob: View {
                         }
                     } else if step == 3 {
                         if let carId = car.id {
-                            viewModel.saveJob(forCarId: carId)
-                            { result in
-                                switch result {
-                                case .success:
-                                    print("Job saved successfully")
-                                    DispatchQueue.main.async {
+                            viewModel.isSaving = true
+                            viewModel.saveJob(forCarId: carId) { result in
+                                DispatchQueue.main.async {
+                                    viewModel.isSaving = false
+                                    switch result {
+                                    case .success:
                                         presentationMode.wrappedValue.dismiss()
+                                    case .failure(let error):
+                                        print("Job save failed: \(error)")
                                     }
-                                case .failure(let error):
-                                    print("Job save failed: \(error)")
                                 }
                             }
-                        } else {
-                            print("Error: Car ID is nil")
                         }
                     }
                 }
@@ -103,7 +101,9 @@ struct addNewJob: View {
     private var jobDetailsView: some View {
         VStack(alignment: .leading, spacing: 20) {
             //TODO: Görsel eklenebilir.
+            //TODO: İŞLEM BAŞLIĞI ALINIP KULLANICIDAN TF ILE
             
+            customTextField(placeholder: "Job Title", text: $viewModel.jobTitle, showError: .constant(false))
             
             CustomPicker(
                 selectedItem: $viewModel.selectedJob,
@@ -160,13 +160,13 @@ struct addNewJob: View {
                             get: { viewModel.brandText[subJob] ?? "" },
                             set: { viewModel.brandText[subJob] = $0 }
                         ),
-                        quantityText: Binding(
-                            get: { viewModel.quantityText[subJob] ?? "" },
-                            set: { viewModel.quantityText[subJob] = $0 }
+                        quantity: Binding(
+                            get: { viewModel.quantity[subJob] ?? 0 },
+                            set: { viewModel.quantity[subJob] = $0 }
                         ),
-                        unitPriceText: Binding(
-                            get: { viewModel.unitPriceText[subJob] ?? "" },
-                            set: { viewModel.unitPriceText[subJob] = $0 }
+                        unitPrice: Binding(
+                            get: { viewModel.unitPrice[subJob] ?? 0.0 },
+                            set: { viewModel.unitPrice[subJob] = $0 }
                         )
                     )
                     .padding(.vertical, 4)

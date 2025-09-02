@@ -14,6 +14,16 @@
         }
       }
     },
+    "%.2f ₺" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%.2f ₺"
+          }
+        }
+      }
+    },
     "%@ %@" : {
       "localizations" : {
         "en" : {
@@ -42,6 +52,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ %2$@ Motor"
+          }
+        }
+      }
+    },
+    "%lld x %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld x %2$@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld x %2$@"
           }
         }
       }
@@ -530,12 +556,63 @@
         }
       }
     },
+    "Job Finished" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitiş Tarihi"
+          }
+        }
+      }
+    },
+    "Job Started" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Başlangıç Tarihi"
+          }
+        }
+      }
+    },
+    "Job Title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İşlem Tanımı"
+          }
+        }
+      }
+    },
+    "Job Type" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Job Type"
+          }
+        }
+      }
+    },
     "Kilometers" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kilometre"
+          }
+        }
+      }
+    },
+    "Labor C." : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İşçilik Ü."
           }
         }
       }
@@ -590,12 +667,32 @@
         }
       }
     },
+    "Mileage" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kilometre"
+          }
+        }
+      }
+    },
     "Miles" : {
       "localizations" : {
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mil"
+          }
+        }
+      }
+    },
+    "Model" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Model"
           }
         }
       }
@@ -631,6 +728,9 @@
           }
         }
       }
+    },
+    "No Jobs Found." : {
+      "shouldTranslate" : false
     },
     "No quick jobs selected." : {
       "shouldTranslate" : false
@@ -716,6 +816,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Oksijen Sensörü Değişimi"
+          }
+        }
+      }
+    },
+    "Parts C. : %@" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parça Ü. : %@"
           }
         }
       }
@@ -924,9 +1034,6 @@
           }
         }
       }
-    },
-    "Tamamlandı" : {
-      "shouldTranslate" : false
     },
     "Thermostat Replacement" : {
       "extractionState" : "manual",

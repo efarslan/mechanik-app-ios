@@ -91,10 +91,11 @@ struct smallDetailBox: View {
 struct historyCard: View {
     let jobName: String
     let date: Date
+    var onTap: () -> Void
     
     var body: some View {
         RoundedRectangle(cornerRadius: 15)
-            .fill(Color(.systemBackground))
+            .fill(.background)
             .frame(maxWidth: .infinity, minHeight: 70)
             .overlay(
                 HStack {
@@ -110,8 +111,7 @@ struct historyCard: View {
                     }
                     Spacer()
                     
-                    Button(action: {
-                        // TODO: Job detayına git
+                    Button(action: { onTap()
                     }) {
                         Image(systemName: "arrow.up.right")
                             
@@ -126,6 +126,38 @@ struct historyCard: View {
     }
 }
 
+struct jobCard: View {
+    let sjName: String
+    let partName: String
+    let partQty: Int
+    let partPrice: Double
+    
+    var body: some View {
+        RoundedRectangle(cornerRadius: 15)
+            .fill(.background)
+            .frame(maxWidth: .infinity, minHeight: 80)
+            .overlay(
+                HStack{
+                    VStack (alignment: .leading) {
+                        Text("\(partQty) x \(sjName)")
+                            .font(.headline)
+                        
+                        Text(partName)
+                            .font(.subheadline)
+                    }
+                    
+                    Spacer()
+                    
+                    Text("\(Double(partQty) * partPrice, specifier: "%.2f") ₺")
+                        .font(.title3)
+                    
+                    //TODO: Locale para birimleri eklenecek.
+                }
+                    .padding(.horizontal)
+            )
+    }
+}
+
 //#Preview {
 //    detailBox(details: "Detail Detail Detail Detail Detail Detail ", icon: "newspaper", title: "Notes")
 //}
@@ -134,7 +166,7 @@ struct historyCard: View {
     NavigationStack {
         CarDetails(
             car: Car(
-                id: "34TST34",
+                id: "34ABC123",
                 license: "34TST34",
                 brand: "Volkswagen",
                 model: "Golf",
@@ -150,4 +182,12 @@ struct historyCard: View {
         )
         .padding()
     }
+}
+
+#Preview {
+    jobCard(sjName: "Oil Filter", partName: "Bosch", partQty: 1, partPrice: 120.0)
+}
+
+#Preview {
+    CarsScreen(isTabBarHidden: .constant(false))
 }

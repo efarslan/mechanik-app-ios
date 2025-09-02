@@ -12,9 +12,15 @@ struct customTextField : View {
         @Binding var text: String
         var isRequired: Bool = false
         @Binding var showError: Bool?
+        var characterLimit: Int? = nil
 
         var body: some View {
             TextField(placeholder, text: $text)
+                .onChange(of: text) { oldValue, newValue in
+                    if let limit = characterLimit, newValue.count > limit {
+                        text = String(newValue.prefix(limit))
+                    }
+                }
                 .padding()
                 .cornerRadius(30)
                 .overlay(
@@ -28,5 +34,3 @@ struct customTextField : View {
                 )
         }
     }
-
-

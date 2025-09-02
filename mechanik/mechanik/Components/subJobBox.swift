@@ -10,8 +10,8 @@ import SwiftUI
 struct SubJobBox: View {
     let jobName: String
     @Binding var brand: String
-    @Binding var quantityText: String
-    @Binding var unitPriceText: String
+    @Binding var quantity: Int
+    @Binding var unitPrice: Double
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -35,14 +35,14 @@ struct SubJobBox: View {
             }
             
             ZStack(alignment: .leading) {
-                if quantityText.isEmpty {
+                if quantity == 0 {
                     Text("Quantity")
                         .foregroundColor(.gray)
                         .padding(.leading, 16)
                         .zIndex(1)
                 }
                 
-                customTextField(placeholder: "", text: $quantityText,showError: .constant(nil))
+                TextField("", value: $quantity, formatter: NumberFormatter())
                     .background(Color.white)
                     .foregroundColor(.black)
                     .cornerRadius(30)
@@ -52,14 +52,14 @@ struct SubJobBox: View {
                 
 
             ZStack(alignment: .leading) {
-                if unitPriceText.isEmpty {
+                if unitPrice == 0 {
                     Text("Unit Price")
                         .foregroundColor(.gray)
                         .padding(.leading, 16)
                         .zIndex(1)
                 }
                 
-                customTextField(placeholder: "", text: $unitPriceText, showError: .constant(nil))
+                TextField("", value: $unitPrice, formatter: NumberFormatter())
                     .background(Color.white)
                     .foregroundColor(.black)
                     .cornerRadius(30)
@@ -83,5 +83,3 @@ struct SubJobBox: View {
 //#Preview {
 //    addNewJob()
 //}
-
-

@@ -11,14 +11,15 @@ import FirebaseAuth
 import FirebaseStorage
 
 class AddJobViewModel: ObservableObject {
-    @Published var step: Int = 1
     @Published var selectedJob: String = "Maintenance"
+    @Published var jobTitle: String = ""
     @Published var mileage: String = ""
     @Published var notes: String = ""
+    @Published var isSaving: Bool = false
     @Published var selectedSubJobs: [String] = []
     @Published var brandText: [String: String] = [:]
-    @Published var quantityText: [String: String] = [:]
-    @Published var unitPriceText: [String: String] = [:]
+    @Published var quantity: [String: Int] = [:]
+    @Published var unitPrice: [String: Double] = [:]
     @Published var selectedImages: [UIImage] = []
 
     private let db = Firestore.firestore()
@@ -41,15 +42,16 @@ class AddJobViewModel: ObservableObject {
                 }
 
                 let job = Job(
-                    jobType: selectedJob,
+//                    jobType: selectedJob,
+                    jobTitle: jobTitle,
                     mileage: mileage,
                     notes: notes,
                     selectedSubJobs: selectedSubJobs,
                     brandText: brandText,
-                    quantityText: quantityText,
-                    unitPriceText: unitPriceText,
+                    quantity: quantity,
+                    unitPrice: unitPrice,
                     photos: photoURLs,
-                    createdAt: Date() // ✅ Bu satırı ekleyin
+                    createdAt: Date()
                 )
                 
                 let jobId = generateJobId()

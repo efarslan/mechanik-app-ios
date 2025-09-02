@@ -13,6 +13,8 @@ struct CarDetails: View {
     @State private var showAddJob = false
     @StateObject private var jobsViewModel = JobsViewModel()
     @Environment(\.presentationMode) var presentationMode
+    @State private var selectedJob: Job?
+
     
     var body: some View {
         ScrollView {
@@ -125,8 +127,13 @@ struct CarDetails: View {
                 .padding()
             } else {
                 LazyVStack(spacing: 8) {
-                    ForEach(jobsViewModel.jobs) { job in
-                        historyCard(jobName: job.jobType, date: job.createdAt)
+                    ForEach(jobsViewModel.jobs.sorted { $0.createdAt > $1.createdAt }.prefix(3)) { job in
+                        historyCard(jobName: job.jobTitle, date: job.createdAt) {
+                            selectedJob = job
+                        }
+                    }
+                    .sheet(item: $selectedJob) { job in
+                        JobDetailSheet(job: job)
                     }
                 }
                 .padding(.bottom)
