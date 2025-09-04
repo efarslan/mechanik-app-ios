@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-      "shouldTranslate" : false
-    },
     "..." : {
       "localizations" : {
         "tr" : {
@@ -20,6 +17,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%.2f ₺"
+          }
+        }
+      }
+    },
+    "%@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ (%2$@)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@)"
           }
         }
       }
@@ -330,6 +343,17 @@
         }
       }
     },
+    "Completed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tamamlandı"
+          }
+        }
+      }
+    },
     "Control Arm" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -504,6 +528,7 @@
       }
     },
     "Hello, World!" : {
+      "extractionState" : "stale",
       "localizations" : {
         "tr" : {
           "stringUnit" : {
@@ -541,6 +566,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hibrit"
+          }
+        }
+      }
+    },
+    "In Progress" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Devam Ediyor"
           }
         }
       }
@@ -583,16 +619,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İşlem Tanımı"
-          }
-        }
-      }
-    },
-    "Job Type" : {
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Job Type"
           }
         }
       }
@@ -894,6 +920,9 @@
         }
       }
     },
+    "Saving job..." : {
+
+    },
     "Search..." : {
       "localizations" : {
         "tr" : {
@@ -1152,6 +1181,9 @@
           }
         }
       }
+    },
+    "Welcome" : {
+
     },
     "Year" : {
       "extractionState" : "manual",

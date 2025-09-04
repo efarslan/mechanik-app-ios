@@ -18,8 +18,11 @@ class AddJobViewModel: ObservableObject {
     @Published var isSaving: Bool = false
     @Published var selectedSubJobs: [String] = []
     @Published var brandText: [String: String] = [:]
-    @Published var quantity: [String: Int] = [:]
-    @Published var unitPrice: [String: Double] = [:]
+    @Published var jobStatus = 1
+    
+    @Published var quantityText: [String: String] = [:]
+    @Published var unitPriceText: [String: String] = [:]
+    
     @Published var selectedImages: [UIImage] = []
 
     private let db = Firestore.firestore()
@@ -40,6 +43,8 @@ class AddJobViewModel: ObservableObject {
                         photoURLs.append(url)
                     }
                 }
+                let quantities = quantityText.mapValues { Int($0) ?? 1 }
+                let prices = unitPriceText.mapValues { Double($0) ?? 0.0 }
 
                 let job = Job(
 //                    jobType: selectedJob,
@@ -48,10 +53,11 @@ class AddJobViewModel: ObservableObject {
                     notes: notes,
                     selectedSubJobs: selectedSubJobs,
                     brandText: brandText,
-                    quantity: quantity,
-                    unitPrice: unitPrice,
+                    quantity: quantities,
+                    unitPrice: prices,
                     photos: photoURLs,
-                    createdAt: Date()
+                    createdAt: Date(),
+                    jobStatus: 0
                 )
                 
                 let jobId = generateJobId()

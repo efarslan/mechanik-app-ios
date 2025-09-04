@@ -35,73 +35,93 @@ struct addNewJob: View {
     ]
     //MARK: - Body
     var body: some View {
-        ScrollView {
-            VStack (alignment: .leading) {
-                if step == 1 {
-                    jobDetailsView
-                } else if step == 2 {
-                    quickJobDetailsView
-                }
-                else if step == 3 {
-                    addPhotosView
-                }
-            }
-            .padding()
-            .scrollIndicators(.hidden)
-            .background(Color(.systemBackground))
-            .navigationTitle("Add New Job")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden(true)
-        }
-
-        HStack {
-            CustomButton(buttonText: step > 1 ? "Back" : "Cancel", buttonTextColor: .white, buttonImage: step > 1 ? "chevron.left" : "xmark", buttonColor: step > 1 ? .color2 : Color.red, imagePosition: .leading) {
-                withAnimation(.easeInOut) {
-                    if step > 1 {
-                        step -= 1
-                    } else {
-                        presentationMode.wrappedValue.dismiss()
-                    }
-                }
-            }
-            
-            CustomButton(buttonText: step >= 3 ? "Save" : "Next", buttonTextColor: .color2, buttonImage: "chevron.right", buttonColor: .color1) {
-                withAnimation(.easeInOut) {
-                    if step < 3 {
-
-                        if viewModel.mileage.trimmingCharacters(in: .whitespaces).isEmpty {
-                            showMileageError = true
-                        } else {
-                            showMileageError = false
-                            step += 1
+        ZStack {
+            VStack {
+                ScrollView {
+                    VStack (alignment: .leading) {
+                        if step == 1 {
+                            jobDetailsView
+                        } else if step == 2 {
+                            quickJobDetailsView
                         }
-                    } else if step == 3 {
-                        if let carId = car.id {
-                            viewModel.isSaving = true
-                            viewModel.saveJob(forCarId: carId) { result in
-                                DispatchQueue.main.async {
-                                    viewModel.isSaving = false
-                                    switch result {
-                                    case .success:
-                                        presentationMode.wrappedValue.dismiss()
-                                    case .failure(let error):
-                                        print("Job save failed: \(error)")
+                        else if step == 3 {
+                            addPhotosView
+                        }
+                    }
+                    .padding()
+                    .scrollIndicators(.hidden)
+                    .background(Color(.systemBackground))
+                    .navigationTitle("Add New Job")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationBarBackButtonHidden(true)
+                }
+
+                HStack {
+                    CustomButton(buttonText: step > 1 ? "Back" : "Cancel", buttonTextColor: .white, buttonImage: step > 1 ? "chevron.left" : "xmark", buttonColor: step > 1 ? .color2 : Color.red, imagePosition: .leading) {
+                        withAnimation(.easeInOut) {
+                            if step > 1 {
+                                step -= 1
+                            } else {
+                                presentationMode.wrappedValue.dismiss()
+                            }
+                        }
+                    }
+                    
+                    CustomButton(buttonText: step >= 3 ? "Save" : "Next", buttonTextColor: .color2, buttonImage: "chevron.right", buttonColor: .color1) {
+                        withAnimation(.easeInOut) {
+                            if step < 3 {
+                                if viewModel.mileage.trimmingCharacters(in: .whitespaces).isEmpty {
+                                    showMileageError = true
+                                } else {
+                                    showMileageError = false
+                                    step += 1
+                                }
+                            } else if step == 3 {
+                                if let carId = car.id {
+                                    viewModel.isSaving = true
+                                    viewModel.saveJob(forCarId: carId) { result in
+                                        DispatchQueue.main.async {
+                                            viewModel.isSaving = false
+                                            switch result {
+                                            case .success:
+                                                presentationMode.wrappedValue.dismiss()
+                                            case .failure(let error):
+                                                print("Job save failed: \(error)")
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
+                .padding()
+            }
+
+            if viewModel.isSaving {
+                ZStack {
+                    Color.black.opacity(0.4)
+                        .ignoresSafeArea()
+                    VStack(spacing: 16) {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                            .scaleEffect(1.5)
+                        Text("Saving job...")
+                            .foregroundColor(.white)
+                            .bold()
+                    }
+                    .padding(24)
+                    .background(Color.black.opacity(0.7))
+                    .cornerRadius(16)
+                }
             }
         }
-        .padding()
-
+        .interactiveDismissDisabled(viewModel.isSaving)
     }
     //MARK: - Job Details
     private var jobDetailsView: some View {
         VStack(alignment: .leading, spacing: 20) {
             //TODO: Görsel eklenebilir.
-            //TODO: İŞLEM BAŞLIĞI ALINIP KULLANICIDAN TF ILE
             
             customTextField(placeholder: "Job Title", text: $viewModel.jobTitle, showError: .constant(false))
             
@@ -138,7 +158,25 @@ struct addNewJob: View {
             
             let isMetric = Locale.current.measurementSystem == "Metric"
             customTextField(placeholder: isMetric ? "Kilometers" : "Miles", text: $viewModel.mileage, isRequired: true, showError: $showMileageError)
+                .keyboardType(.numberPad)
                 .padding(.top)
+                .onChange(of: viewModel.mileage) { newValue in
+                    // Sadece rakamları bırak
+                    let digits = newValue.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
+                    if !digits.isEmpty {
+                        showMileageError = false
+                        if let kmInt = Int(digits) {
+                            let formatter = NumberFormatter()
+                            formatter.numberStyle = .decimal
+                            formatter.groupingSeparator = "."
+                            if let formatted = formatter.string(from: NSNumber(value: kmInt)) {
+                                viewModel.mileage = formatted
+                            }
+                        }
+                    } else {
+                        viewModel.mileage = ""
+                    }
+                }
 
             customEditor(text: $viewModel.notes, placeholder: String(localized: "Notes"), characterLimit: 180)
                 .frame(minHeight: 170)
@@ -152,6 +190,8 @@ struct addNewJob: View {
             if viewModel.selectedSubJobs.isEmpty {
                 Text("No quick jobs selected.")
                     .foregroundColor(.secondary)
+                
+                //TODO: Burasının tasarımı geliştirilecek.
             } else {
                 ForEach(viewModel.selectedSubJobs, id: \.self) { subJob in
                     SubJobBox(
@@ -160,13 +200,13 @@ struct addNewJob: View {
                             get: { viewModel.brandText[subJob] ?? "" },
                             set: { viewModel.brandText[subJob] = $0 }
                         ),
-                        quantity: Binding(
-                            get: { viewModel.quantity[subJob] ?? 0 },
-                            set: { viewModel.quantity[subJob] = $0 }
+                        quantityText: Binding(
+                            get: { viewModel.quantityText[subJob] ?? "" },
+                            set: { viewModel.quantityText[subJob] = $0 }
                         ),
-                        unitPrice: Binding(
-                            get: { viewModel.unitPrice[subJob] ?? 0.0 },
-                            set: { viewModel.unitPrice[subJob] = $0 }
+                        unitPriceText: Binding(
+                            get: { viewModel.unitPriceText[subJob] ?? "" },
+                            set: { viewModel.unitPriceText[subJob] = $0 }
                         )
                     )
                     .padding(.vertical, 4)

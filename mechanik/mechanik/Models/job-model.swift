@@ -19,6 +19,8 @@ struct Job: Codable, Identifiable {
     let unitPrice: [String: Double]
     let photos: [String]
     let createdAt: Date
+    let jobStatus: Int
+
     
     // Firestore'a kaydetmek için dictionary
     var dictionary: [String: Any] {
@@ -31,7 +33,8 @@ struct Job: Codable, Identifiable {
             "quantity": quantity,
             "unitPrice": unitPrice,
             "photos": photos,
-            "createdAt": Timestamp(date: createdAt)
+            "createdAt": Timestamp(date: createdAt),
+            "jobStatus": jobStatus
         ]
     }
 }

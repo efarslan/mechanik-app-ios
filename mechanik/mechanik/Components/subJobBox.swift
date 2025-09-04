@@ -10,8 +10,8 @@ import SwiftUI
 struct SubJobBox: View {
     let jobName: String
     @Binding var brand: String
-    @Binding var quantity: Int
-    @Binding var unitPrice: Double
+    @Binding var quantityText: String
+    @Binding var unitPriceText: String
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -20,52 +20,35 @@ struct SubJobBox: View {
                 .font(.headline)
                 .bold()
             
-            ZStack(alignment: .leading) {
-                if brand.isEmpty {
-                    Text("Brand")
-                        .foregroundColor(.gray)
-                        .padding(.leading, 16)
-                        .zIndex(1)
-                }
-                
-                customTextField(placeholder: "", text: $brand, showError: .constant(nil))
-                    .background(Color.white)
-                    .foregroundColor(.black)
-                    .cornerRadius(30)
-            }
+            TextField("Brand", text: $brand)
+                .padding(8)
+                .background(Color.white)
+                .foregroundColor(.black)
+                .cornerRadius(30)
             
-            ZStack(alignment: .leading) {
-                if quantity == 0 {
-                    Text("Quantity")
-                        .foregroundColor(.gray)
-                        .padding(.leading, 16)
-                        .zIndex(1)
+            TextField("Quantity", text: $quantityText)
+                .padding(8)
+                .background(Color.white)
+                .foregroundColor(.black)
+                .cornerRadius(30)
+                .keyboardType(.numberPad)
+                .onChange(of: quantityText) { newValue in
+                    quantityText = newValue.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
                 }
-                
-                TextField("", value: $quantity, formatter: NumberFormatter())
-                    .background(Color.white)
-                    .foregroundColor(.black)
-                    .cornerRadius(30)
-                    .keyboardType(.numberPad)
 
-            }
-                
-
-            ZStack(alignment: .leading) {
-                if unitPrice == 0 {
-                    Text("Unit Price")
-                        .foregroundColor(.gray)
-                        .padding(.leading, 16)
-                        .zIndex(1)
+            TextField("Unit Price", text: $unitPriceText)
+                .padding(8)
+                .background(Color.white)
+                .foregroundColor(.black)
+                .cornerRadius(30)
+                .keyboardType(.decimalPad)
+                .onChange(of: unitPriceText) { newValue in
+                    // Rakam, nokta ve virgül dışında karakterleri temizle
+                    var filtered = newValue.replacingOccurrences(of: "[^0-9.,]", with: "", options: .regularExpression)
+                    // Virgül varsa noktaya çevir
+                    filtered = filtered.replacingOccurrences(of: ",", with: ".")
+                    unitPriceText = filtered
                 }
-                
-                TextField("", value: $unitPrice, formatter: NumberFormatter())
-                    .background(Color.white)
-                    .foregroundColor(.black)
-                    .cornerRadius(30)
-                    .keyboardType(.decimalPad)
-
-            }
         }
         .padding()
         .background(
