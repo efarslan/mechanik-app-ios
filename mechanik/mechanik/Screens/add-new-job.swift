@@ -160,9 +160,9 @@ struct addNewJob: View {
             customTextField(placeholder: isMetric ? "Kilometers" : "Miles", text: $viewModel.mileage, isRequired: true, showError: $showMileageError)
                 .keyboardType(.numberPad)
                 .padding(.top)
-                .onChange(of: viewModel.mileage) { newValue in
+                .onChange(of: viewModel.mileage) {
                     // Sadece rakamları bırak
-                    let digits = newValue.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
+                    let digits = viewModel.mileage.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
                     if !digits.isEmpty {
                         showMileageError = false
                         if let kmInt = Int(digits) {

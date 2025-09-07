@@ -536,7 +536,8 @@
             "value" : "Merhaba, Dünya!"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "Home" : {
       "localizations" : {
@@ -909,6 +910,16 @@
         }
       }
     },
+    "Recent Searches" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arama Geçmişi"
+          }
+        }
+      }
+    },
     "Save" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -921,7 +932,14 @@
       }
     },
     "Saving job..." : {
-
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İşlem Kaydediliyor…"
+          }
+        }
+      }
     },
     "Search..." : {
       "localizations" : {
@@ -1182,8 +1200,15 @@
         }
       }
     },
-    "Welcome" : {
-
+    "Welcome," : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoşgeldiniz,"
+          }
+        }
+      }
     },
     "Year" : {
       "extractionState" : "manual",

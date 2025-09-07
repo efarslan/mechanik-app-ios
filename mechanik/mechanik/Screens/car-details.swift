@@ -69,6 +69,7 @@ struct CarDetails: View {
                 print("❌ Car ID is NIL!")
                 return
             }
+            print(car.fuelType)
             
             jobsViewModel.fetchJobs(for: carId)
         }
@@ -84,7 +85,7 @@ struct CarDetails: View {
     // MARK: - Header
     private var header: some View {
         VStack (alignment: .center) {
-            detailBox(brand: car.brand, model: car.model, year: car.year, engine: car.engineSize, fuel: car.fuelType, chasis: car.chasisNo)
+            detailBox(brand: car.brand, model: car.model, year: car.year, engine: car.engineSize, fuel: NSLocalizedString(car.fuelType, comment: ""), chasis: car.chasisNo)
             
             HStack {
                 smallDetailBox(icon: "newspaper", title: "Notes", value: car.notes.isEmpty ? "-" : car.notes)

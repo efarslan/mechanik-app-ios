@@ -49,7 +49,7 @@ struct InfoRow: View {
             Text(title)
                 .font(.headline)
                 .foregroundColor(.primary)
-            Text(value)
+            Text(LocalizedStringKey(value))
                 .font(.subheadline)
                 .foregroundColor(.secondary)
         }

@@ -22,7 +22,7 @@ struct RegisterScreen: View {
                 Spacer()
                 
                 VStack(spacing: 15) {
-                    TextField("Name Surname", text: $viewModel.adSoyad)
+                    TextField("Name Surname", text: $viewModel.name)
                         .padding()
                         .cornerRadius(30)
                         .overlay(
@@ -30,7 +30,7 @@ struct RegisterScreen: View {
                                 .stroke(Color.gray.opacity(0.4), lineWidth: 1)
                         )
                     
-                    TextField("Business Name", text: $viewModel.isletmeAdi)
+                    TextField("Business Name", text: $viewModel.businessName)
                         .padding()
                         .cornerRadius(30)
                         .overlay(

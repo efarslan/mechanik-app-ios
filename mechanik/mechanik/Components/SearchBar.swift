@@ -16,7 +16,7 @@ struct SearchBar: View {
             TextField("Search...", text: $text)
                 .padding(10)
                 .padding(.horizontal, 30) // solda-search icon için boşluk
-                .background(Color(.systemGray6))
+                .background(.ultraThinMaterial)
                 .cornerRadius(12)
                 .overlay(
                     HStack {
@@ -36,7 +36,15 @@ struct SearchBar: View {
                         }
                     }
                 )
+                
         }
-        .padding(.horizontal)
     }
+}
+
+#Preview {
+    MainScreen(isTabBarHidden: .constant(true))
+}
+
+#Preview {
+    CarsScreen(isTabBarHidden: .constant(true))
 }

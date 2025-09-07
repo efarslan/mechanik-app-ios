@@ -12,7 +12,7 @@ import SwiftUI
 
 struct AracEklemeScreen: View {
     @Environment(\.presentationMode) var presentationMode
-    @State private var currentState = 1
+    @State private var currentState = 2
     // Aşama 1
     @State private var license = ""
     @State private var showLicenseError: Bool? = nil
@@ -216,12 +216,17 @@ struct AracEklemeScreen: View {
                 RoundedRectangle(cornerRadius: 30)
                     .stroke(Color.gray.opacity(0.4), lineWidth: 1)
             )
-            .onChange(of: brand) { oldValue, newBrand in
+            .onChange(of: brand) {
                 model = ""
-                viewModel.fetchModels(for: newBrand)
+                viewModel.fetchModels(for: brand)
             }
             
-            customTextField(placeholder: "Year", text: $year, isRequired: true, showError: $showYearError)
+            customTextField(placeholder: "Year", text: $year, isRequired: true, showError: $showYearError, characterLimit: 4)
+                .keyboardType(.numberPad)
+                .onChange(of: year) {
+                    let filtered = year.filter { $0.isNumber}
+                    year = filtered
+                }
             
             
             //Fuel Picker
@@ -229,7 +234,6 @@ struct AracEklemeScreen: View {
             
             // İçten Yanmalı Motor ise
             //TODO: Şanzıman türü eklenecek (otomatik-manuel)
-            //TODO: Araç model yılı eklenecek.
             
             if !fuelType.isEmpty && fuelType != "Electric" {
                     TextField("Engine Size (cc)", text: $engineSize)
@@ -240,6 +244,17 @@ struct AracEklemeScreen: View {
                                 .stroke(Color.gray.opacity(0.4), lineWidth: 1)
                         )
                         .keyboardType(.numberPad)
+                        .onChange(of: engineSize) {
+                            let filtered = engineSize.filter { $0.isNumber }
+                            var formatted = filtered
+                            if filtered.count > 1 {
+                                formatted.insert(".", at: filtered.index(filtered.startIndex, offsetBy: 1))
+                            }
+                            if formatted.count > 4 {
+                                formatted = String(formatted.prefix(4))
+                            }
+                            engineSize = formatted
+                        }
                 
             }
             customTextField(placeholder: "Chasis Number (Optional)", text: $chasisNo,showError: .constant(nil))

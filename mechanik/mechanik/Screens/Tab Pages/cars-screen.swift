@@ -29,7 +29,7 @@ struct CarsScreen: View {
                                     .onAppear {isTabBarHidden = true}
                                     .onDisappear {isTabBarHidden = false}
                                 ) {
-                                    VehicleCard(brand: car.brand, model: car.model, plateNumber: car.license, engineSize: car.engineSize, fuelType: car.fuelType)
+                                    VehicleCard(brand: car.brand, model: car.model, plateNumber: car.license, engineSize: car.engineSize, fuelType: NSLocalizedString(car.fuelType, comment: ""))
                                 }
                             }
                         }
@@ -42,7 +42,9 @@ struct CarsScreen: View {
                         Spacer()
                         NavigationLink(destination: AracEklemeScreen()
                             .onAppear { isTabBarHidden = true }
-                            .onDisappear { isTabBarHidden = false }
+                            .onDisappear { isTabBarHidden = false
+                                viewModel.fetchCars()
+                            }
                         ) {
                             Image(systemName: "plus")
                                 .foregroundColor(.white)

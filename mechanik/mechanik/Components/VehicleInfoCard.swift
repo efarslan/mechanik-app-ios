@@ -44,7 +44,7 @@ struct VehicleCard: View {
                             .font(.headline)
                             .foregroundColor(.secondary)
                         
-                        Text("\(engineSize) \(fuelType) Engine")
+                        Text("\(engineSize) \(fuelType)")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }

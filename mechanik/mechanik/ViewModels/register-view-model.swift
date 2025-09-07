@@ -12,8 +12,8 @@ import FirebaseFirestore
 
 class RegisterViewModel: ObservableObject {
     // Inputs
-    @Published var adSoyad = ""
-    @Published var isletmeAdi = ""
+    @Published var name = ""
+    @Published var businessName = ""
     @Published var email = ""
     @Published var password = ""
     
@@ -25,7 +25,7 @@ class RegisterViewModel: ObservableObject {
     private let db = Firestore.firestore()
     
     func registerUser() {
-        guard !adSoyad.isEmpty, !email.isEmpty, !password.isEmpty else {
+        guard !name.isEmpty, !email.isEmpty, !password.isEmpty else {
             errorMessage = "Lütfen tüm alanları doldurun."
             return
         }
@@ -49,12 +49,12 @@ class RegisterViewModel: ObservableObject {
                 
                 // Firestore’da kullanıcı dokümanı oluştur
                 self?.db.collection("users").document(userId).setData([
-                    "adSoyad": self?.adSoyad ?? "",
-                    "isletmeAdi": self?.isletmeAdi ?? "",
+                    "name": self?.name ?? "",
+                    "businessName": self?.businessName ?? "",
                     "email": self?.email ?? "",
-                    "kayitDurumu": "tamam",
-                    "telefon": "",
-                    "adres": ""
+                    "userStatus": 1,
+                    "phoneNum": "",
+                    "adress": ""
                 ]) { error in
                     if let error = error {
                         self?.errorMessage = "Firestore kaydı başarısız: \(error.localizedDescription)"
