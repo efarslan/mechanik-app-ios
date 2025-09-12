@@ -38,3 +38,9 @@ struct Job: Codable, Identifiable {
         ]
     }
 }
+
+struct ActiveJobWithCar: Identifiable {
+    let id: String
+    let job: Job
+    let car: Car
+}

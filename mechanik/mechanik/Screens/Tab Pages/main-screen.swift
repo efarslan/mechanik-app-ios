@@ -19,19 +19,29 @@ struct MainScreen: View {
     //View Models
     @StateObject private var viewModel = UserViewModel()
     @StateObject private var carViewModel = FetchCarsViewModel()
+    @StateObject private var activeJobsVM = ActiveJobsViewModel()
     
     var body: some View {
         NavigationStack {
-            VStack (spacing: 36) {
+            VStack (spacing: 16) {
                 header
                 ScrollView {
-                    searchTab
+                    VStack(spacing: 12) {
+                        searchTab
+                        inProgressJobs
+                    }
+                }
+                .refreshable {
+                    viewModel.fetchCurrentUser()
+                    carViewModel.fetchCars()
+                    activeJobsVM.fetchActiveJobs()
                 }
             }
             .padding()
             .onAppear {
                 viewModel.fetchCurrentUser()
                 carViewModel.fetchCars()
+                activeJobsVM.fetchActiveJobs()
             }
             .navigationDestination(isPresented: $navigateToCarDetail) {
                 if let car = selectedCar {
@@ -145,6 +155,36 @@ struct MainScreen: View {
     }
     
     //MARK: - In Progress jobs
+    private var inProgressJobs: some View {
+        RoundedRectangle(cornerRadius: 16)
+            .fill(.ultraThickMaterial)
+            .overlay(
+                VStack(alignment: .leading, spacing: 8) {
+                    
+                    Text("In Progress Jobs")
+                        .font(.headline)
+                        .padding(.leading, 16)
+                    
+                    if activeJobsVM.activeJobsWithCars.isEmpty {
+                        Text("No Active Jobs")
+                            .foregroundColor(.secondary)
+                            .padding(.leading, 16)
+                            .padding(.bottom, 12)
+                    } else {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack{
+                                ForEach(activeJobsVM.activeJobsWithCars) { activeJob in
+                                    ActiveJobsCard(activeJob: activeJob)
+                                    
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+            )
+            .frame(height: UIScreen.main.bounds.height * 0.45)
+    }
     
     // MARK: - Search functionality
     private func searchForCar(with plateNumber: String) {

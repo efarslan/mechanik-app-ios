@@ -123,7 +123,7 @@ struct addNewJob: View {
         VStack(alignment: .leading, spacing: 20) {
             //TODO: Görsel eklenebilir.
             
-            customTextField(placeholder: "Job Title", text: $viewModel.jobTitle, showError: .constant(false))
+            customTextField(placeholder: "Job Title", text: $viewModel.jobTitle, showError: .constant(false), characterLimit: 50)
             
             CustomPicker(
                 selectedItem: $viewModel.selectedJob,

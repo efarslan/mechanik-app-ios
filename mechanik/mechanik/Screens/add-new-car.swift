@@ -109,11 +109,7 @@ struct AracEklemeScreen: View {
                             viewModel.license = license
                             viewModel.brand = brand
                             viewModel.model = model
-                            if let yearInt = Int(year) {
-                                viewModel.year = yearInt
-                            } else {
-                                viewModel.year = Calendar.current.component(.year, from: Date())
-                            }
+                            viewModel.year = Int(year) ?? Calendar.current.component(.year, from: Date())
                             viewModel.fuelType = fuelType
 
                             if fuelType != "Electric" {

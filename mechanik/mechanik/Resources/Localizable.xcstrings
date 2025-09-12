@@ -53,22 +53,6 @@
         }
       }
     },
-    "%@ %@ Engine" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ %2$@ Engine"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$@ %2$@ Motor"
-          }
-        }
-      }
-    },
     "%lld x %@" : {
       "localizations" : {
         "en" : {
@@ -582,6 +566,16 @@
         }
       }
     },
+    "In Progress Jobs" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Devam Eden İşlemler"
+          }
+        }
+      }
+    },
     "Injector Service" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -755,6 +749,12 @@
           }
         }
       }
+    },
+    "No Active Jobs" : {
+
+    },
+    "No Image Available." : {
+
     },
     "No Jobs Found." : {
       "shouldTranslate" : false
@@ -1205,7 +1205,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hoşgeldiniz,"
+            "value" : "Hoş geldiniz,"
           }
         }
       }
